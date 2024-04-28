@@ -1,0 +1,10 @@
+- name: Xorg keyboard configuration
+  hosts: localhost
+  connection: localhost
+  become: true
+  tasks:
+    - name: Copy file
+      ansible.builtin.copy:
+        src: ../config/00-keyboard.conf
+        dest: /etc/X11/xorg.conf.d/00-keyboard.conf
+        mode: u=rw,g=r,o=r
