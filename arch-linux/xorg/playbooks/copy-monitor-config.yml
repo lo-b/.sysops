@@ -1,0 +1,25 @@
+- name: Xorg monitor configuration
+  hosts: localhost
+  connection: localhost
+  become: true
+  tasks:
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+    - name: Execute shell command to check if nouveau drive is loaded
+      ansible.builtin.shell:
+        cmd: set -o pipefail && lsmod | awk '{print $1}' | grep -xq "nouveau"
+        executable: /bin/bash
+      register: nouveau_check
+      changed_when: nouveau_check.rc != 0
+    - name: Assert nouveau driver is installed and being used
+      ansible.builtin.assert:
+        fail_msg: "nouveau driver should be installed and loaded/in use"
+        that:
+          - nouveau_check.rc == 0
+          - ansible_facts.packages['xf86-video-nouveau'][0].version is defined
+    - name: Copy file
+      ansible.builtin.copy:
+        src: ../config/10-monitor.conf
+        dest: /etc/X11/xorg.conf.d/10-monitor.conf
+        mode: u=rw,g=r,o=r
