@@ -1,0 +1,6 @@
+- name: Xorg keyboard configuration
+  become: true
+  ansible.builtin.import_tasks: copy-keyboard-config.yml
+- name: Xorg monitor configuration
+  become: true
+  ansible.builtin.import_tasks: copy-monitor-config.yml

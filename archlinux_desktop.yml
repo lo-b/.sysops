@@ -1,0 +1,5 @@
+- name: "Arch linux desktop setup"
+  hosts: localhost
+  connection: localhost
+  roles:
+    - xorg
