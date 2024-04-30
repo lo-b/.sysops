@@ -1,0 +1,13 @@
+xorg_screen_width: 1920
+xorg_screen_height: 1080
+xorg_refreshrate: 144
+xorg_conf_d: /etc/X11/xorg.conf.d
+xorg_monitor_conf_src: ../templates/monitor.conf.j2
+xorg_monitor_conf_dest: 10-monitor.conf
+xorg_keyboard_conf_src: ../templates/keyboard.conf.j2
+xorg_keyboard_conf_dest: 00-keyboard.conf
+xorg_keyboard_id: system-keyboard
+xorg_xkb_layout: us,us
+xorg_xkb_model: pc105
+xorg_xkb_variant: altgr-intl,intl
+xorg_xkb_toggle_grp: grp:alt_space_toggle

@@ -1,0 +1,8 @@
+Section "InputClass"
+        Identifier "{{ xorg_keyboard_id }}"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "{{ xorg_xkb_layout }}"
+        Option "XkbModel" "{{ xorg_xkb_model }}"
+        Option "XkbVariant" "{{ xorg_xkb_variant }}"
+        Option "XkbOptions" "{{ xorg_xkb_toggle_grp }}"
+EndSection

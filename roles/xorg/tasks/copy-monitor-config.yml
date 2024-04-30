@@ -1,21 +1,32 @@
-- name: Gather the package facts
-  ansible.builtin.package_facts:
-    manager: auto
-- name: Execute shell command used to check if nouveau driver is loaded
+- name: Ensure libxcvt is installed
+  ansible.builtin.package:
+    name: libxcvt
+    state: present
+- name: Ensure xrandr is installed
+  ansible.builtin.package:
+    name: xorg-xrandr
+- name: Get first connected monitor ID
   ansible.builtin.shell:
-    cmd: set -o pipefail && lsmod | awk '{print $1}' | grep -xq "nouveau"
+    cmd: set -o pipefail && xrandr --listactivemonitors | awk 'FNR == 2 {print $4}'
     executable: /bin/bash
-  register: nouveau_check
-  changed_when: nouveau_check.rc != 0
-- name: Assert nouveau driver is installed and being used
-  ansible.builtin.assert:
-    success_msg: "driver installed and in use"
-    fail_msg: "nouveau driver should be installed and loaded/in use"
-    that:
-      - nouveau_check.rc == 0
-      - ansible_facts.packages['xf86-video-nouveau'][0].version is defined
-- name: Copy file
-  ansible.builtin.copy:
-    src: ../files/10-monitor.conf
-    dest: /etc/X11/xorg.conf.d/10-monitor.conf
-    mode: u=rw,g=r,o=r
+  register: active_monitor_id
+  changed_when: active_monitor_id.rc != 0
+  check_mode: false
+- name: Generate ModeLine using cvt
+  ansible.builtin.shell:
+    cmd: set -o pipefail && cvt {{ xorg_screen_width }} {{ xorg_screen_height }} {{ xorg_refreshrate }} | grep -w -m 1 "Modeline"
+    executable: /bin/bash
+  register: mode_line
+  changed_when: mode_line.rc != 0
+  check_mode: false
+- name: Write monitor config file
+  ansible.builtin.template:
+    mode: "{{ etc_mode }}"
+    src: "{{ xorg_monitor_conf_src }}"
+    dest: "{{ (xorg_conf_d, xorg_monitor_conf_dest) | path_join }}"
+  vars:
+    xorg_mode_line: "{{ mode_line.stdout }}"
+    xorg_active_monitor_id: '"{{ active_monitor_id.stdout }}"'
+- name: Debug dest
+  ansible.builtin.debug:
+    msg: "{{ xorg_conf_d }}/{{ xorg_monitor_conf_dest | basename }}"

@@ -1,0 +1,5 @@
+Section "Monitor"
+    Identifier {{ xorg_active_monitor_id }}
+    {{ xorg_mode_line }}
+    Option "PreferredMode" {{ xorg_mode_line.split(' ')[1] }}
+EndSection

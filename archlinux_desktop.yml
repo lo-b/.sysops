@@ -1,5 +1,6 @@
-- name: "Arch linux desktop setup"
+- name: "Arch Linux desktop configuation"
   hosts: localhost
   connection: localhost
+  gather_facts: no
   roles:
     - xorg
