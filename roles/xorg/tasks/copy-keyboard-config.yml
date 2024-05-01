@@ -1,5 +1,0 @@
-- name: Copy keyboard config file
-  ansible.builtin.template:
-    mode: "{{ etc_mode }}"
-    src: "{{ xorg_keyboard_conf_src }}"
-    dest: "{{ ('/tmp', xorg_keyboard_conf_dest) | path_join }}"
