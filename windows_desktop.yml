@@ -1,0 +1,5 @@
+- name: "Windows desktop configuration"
+  hosts: windows
+  gather_facts: true
+  roles:
+    - firefox
