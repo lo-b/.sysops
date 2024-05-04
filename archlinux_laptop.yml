@@ -1,12 +1,11 @@
-- name: "Arch Linux desktop configuation"
+- name: "Arch Linux laptop configuration"
   hosts: localhost
   connection: localhost
   gather_facts: true
   pre_tasks:
-    - name: Check if running on desktop
+    - name: Check if running on laptop
       ansible.builtin.assert:
-        that: "ansible_facts['nodename'] | regex_search('desktop')"
+        that: "ansible_facts['nodename'] | regex_search('xps')"
         fail_msg: "hostname: {{ ansible_facts['nodename'] }}"
   roles:
-    - xorg
     - firefox
