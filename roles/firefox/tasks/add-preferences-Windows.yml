@@ -1,0 +1,20 @@
+- name: Get Firefox process id
+  ansible.windows.win_shell: |
+    (Get-Process -Name firefox).Id
+  register: firefox_process
+  ignore_errors: true
+
+- name: Firefox is running, closing...
+  ansible.windows.win_shell: |
+    Stop-Process -Name 'firefox'
+  when: (firefox_process.rc == 0) and (firefox_process.stderr | length == 0)
+
+- name: Write preferences to config file
+  community.windows.win_lineinfile:
+    line: 'user_pref("{{ item.name }}", {{ item.value }});'
+    path: "{{ (root_profile_directory, 'prefs.js') | path_join }}"
+    state: present
+  when: ansible_os_family == "Windows"
+  loop: "{{ firefox_preferences }}"
+  loop_control:
+    label: "preference: {{ item.name }}, value: {{ item.value }}"

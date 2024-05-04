@@ -1,0 +1,11 @@
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Find root profile directory in use
+  ansible.builtin.include_tasks: "determine-profile-dir-{{ ansible_os_family }}.yml"
+
+- name: Add preferences
+  ansible.builtin.include_tasks: "add-preferences-{{ ansible_os_family }}.yml"
+
+- name: Add custom CSS
+  ansible.builtin.include_tasks: "add-custom-css-{{ ansible_os_family }}.yml"

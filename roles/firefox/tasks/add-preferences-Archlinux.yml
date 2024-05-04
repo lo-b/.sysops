@@ -1,0 +1,20 @@
+- name: Get Firefox process id
+  ansible.builtin.shell:
+    cmd: "pgrep firefox"
+  register: pgrep_firefox
+  ignore_errors: true
+
+- name: Firefox is running, closing...
+  ansible.builtin.shell:
+    cmd: pkill firefox
+  when: pgrep_firefox.rc == 0
+
+- name: Write preferences to config file
+  ansible.builtin.lineinfile:
+    line: 'user_pref("{{ item.name }}", {{ item.value }});'
+    path: "{{ (root_profile_directory, 'prefs.js') | path_join }}"
+    state: present
+  when: ansible_os_family == "Archlinux"
+  loop: "{{ firefox_preferences }}"
+  loop_control:
+    label: "preference: {{ item.name }}, value: {{ item.value }}"

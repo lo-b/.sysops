@@ -1,0 +1,23 @@
+- name: Get AppData directory
+  ansible.windows.win_shell: |
+    [Environment]::GetFolderPath("ApplicationData")
+  register: appdata_script_output
+
+- name: Search for sub dirs in profiles dir
+  ansible.windows.win_find:
+    paths: "{{ appdata_script_output.stdout | trim }}\\{{ firefox_profiles_path_component }}"
+    file_type: directory
+    patterns: "*default*"
+  register: firefox_profiles
+
+- name: Found the following profile directories
+  ansible.builtin.debug:
+    msg: "{{ firefox_profiles }}"
+
+- name: Set root profile directry
+  ansible.builtin.set_fact:
+    root_profile_directory: "{{ (firefox_profiles.files | max(attribute='lastaccesstime')).path }}"
+
+- name: Root profile directory
+  ansible.builtin.debug:
+    msg: "{{ root_profile_directory }}"

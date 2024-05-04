@@ -1,0 +1,9 @@
+- name: Ensure chrome dir exists
+  ansible.windows.win_file:
+    path: "{{ root_profile_directory }}\\chrome"
+    state: directory
+
+- name: Copy userChrome CSS file
+  ansible.windows.win_copy:
+    src: "{{ firefox_css_src }}"
+    dest: "{{ root_profile_directory }}\\chrome\\userChrome.css"
