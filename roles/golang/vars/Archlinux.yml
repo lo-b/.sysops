@@ -1,0 +1,2 @@
+golang_package_name: go
+golang_language_server: gopls

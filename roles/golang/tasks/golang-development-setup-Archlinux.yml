@@ -1,0 +1,10 @@
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+- name: "Install golang"
+  ansible.builtin.package:
+    name: "{{ golang_package_name }}"
+    state: present
+- name: Install language server ({{ golang_language_server }})
+  ansible.builtin.package:
+    name: "{{ golang_language_server }}"
+    state: present

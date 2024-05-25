@@ -1,0 +1,2 @@
+- name: Setup development tools
+  ansible.builtin.include_tasks: "golang-development-setup-{{ ansible_os_family }}.yml"
