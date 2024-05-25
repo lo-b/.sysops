@@ -11,3 +11,8 @@ xorg_xkb_layout: us,us
 xorg_xkb_model: pc105
 xorg_xkb_variant: altgr-intl,intl
 xorg_xkb_toggle_grp: grp:alt_space_toggle
+xorg_screensaver_conf_src: ../templates/screensaver.conf.j2
+xorg_screensaver_conf_dest: 20-serverflags.conf
+xorg_standby_time: 0
+xorg_suspend_time: 0
+xorg_off_time: 0

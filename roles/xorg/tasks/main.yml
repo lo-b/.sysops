@@ -4,3 +4,6 @@
 - name: Xorg monitor configuration
   become: true
   ansible.builtin.import_tasks: create-monitor-config.yml
+- name: Xorg screensaver configuration
+  become: true
+  ansible.builtin.import_tasks: create-screensaver-config.yml
