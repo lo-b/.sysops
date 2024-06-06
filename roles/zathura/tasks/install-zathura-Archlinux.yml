@@ -1,0 +1,8 @@
+- name: Install zathura
+  ansible.builtin.package:
+    name: "{{ zathura_package_name }}"
+    state: present
+- name: Install dependencies for PDF support
+  ansible.builtin.package:
+    name: "{{ zathura_pdf_package_name }}"
+    state: present

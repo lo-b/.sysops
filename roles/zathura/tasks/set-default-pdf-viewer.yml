@@ -1,0 +1,9 @@
+- name: Get current default PDF viewer
+  ansible.builtin.command:
+    cmd: xdg-mime query default application/pdf
+  register: xdg_pdf_default
+- name: Make zathura the default PDF viewer
+  ansible.builtin.command:
+    cmd: xdg-mime default org.pwmt.zathura.desktop application/pdf
+  when: ('zathura' not in xdg_pdf_default.stdout)
+  changed_when: true
