@@ -1,0 +1,22 @@
+- name: Ensure python is present
+  become: true
+  ansible.builtin.package:
+    name: "{{ python_pkgname }}"
+    state: present
+- name: Setup python version management ({{ python_pyenv_pkgname }})
+  become: true
+  ansible.builtin.package:
+    name: "{{ python_pyenv_pkgname }}"
+    state: present
+# Setup build environment for pyenv itself when installing new Python versions
+- name: Ensure build environment dependencies are present
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ python_pyenv_builddeps }}"
+# TODO: Create custom module to check if lines are present in (rc) file or
+# write them; use normal debug message for now
+- name: Set up shell environment
+  ansible.builtin.debug:
+    msg: "Ensure pyenv root is set + added to path and eval on pyenv init is called"

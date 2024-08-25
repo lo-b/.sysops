@@ -1,0 +1,24 @@
+- name: Ensure poetry is installed
+  become: true
+  ansible.builtin.package:
+    name: "{{ python_poetry_pkgname }}"
+    state: present
+- name: Ensure ~/.zfunc directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.zfunc"
+    state: directory
+    mode: '0755'
+- name: Generate zsh completion function for poetry
+  ansible.builtin.command: poetry completions zsh
+  register: poetry_completions
+  changed_when: false
+- name: Write zsh completion function to file
+  ansible.builtin.copy:
+    content: "{{ poetry_completions.stdout }}"
+    dest: "{{ ansible_env.HOME }}/.zfunc/_poetry"
+    mode: "0644"
+# TODO: Create custom module to check if lines are present in (rc) file or
+# write them; use normal debug message for now
+- name: Load completion by sourcing zsh functions dir
+  ansible.builtin.debug:
+    msg: "Ensure zsh functions directory is added to fpath and autoload + compinit is called"

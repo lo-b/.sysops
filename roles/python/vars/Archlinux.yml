@@ -1,0 +1,9 @@
+python_pkgname: python
+python_pyenv_pkgname: pyenv
+python_pyenv_builddeps:
+  - base-devel
+  - openssl
+  - zlib
+  - xz
+  - tk
+python_poetry_pkgname: python-poetry

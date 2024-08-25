@@ -9,8 +9,7 @@ Per host requirements:
 
 ### Windows
 
-- Ensure
-  [a WinRM listener is set up](https://docs.ansible.com/ansible/latest/os_guide/windows_setup.html#setup-winrm-listener)
+- Ensure [a WinRM listener is set up](https://docs.ansible.com/ansible/latest/os_guide/windows_setup.html#setup-winrm-listener)
   and the service is running/enabled at startup.
 - Install the `pywinrm` and `requests-ntlm` python packages
 
@@ -24,5 +23,5 @@ Roles source variables using the OS name.
 To run configuration setup for Arch Linux desktop (locally), run:
 `ansible-playbook --ask-become archlinux_desktop.yml`
 
-To run a plays against Windows host run:
+To run a play against a Windows host run:
 `ansible-playbook --ask-pass windows_desktop.yml -i windows.ini`
